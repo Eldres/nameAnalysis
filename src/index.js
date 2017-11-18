@@ -15,30 +15,41 @@ exports.handler = function(event, context, callback) {
 };
 
 var handlers = {
-	'NameAnalysisIntent': function() {
-		var requestedName 				  = alexaLib.validateAndSetSlot(this.event.request.intent.slots.Name);
-		var myName 						  = langEN.NAMES[requestedName];
-		var requestedGender 			  = alexaLib.validateAndSetSlot(this.event.request.intent.slots.Gender);
-		var genders 					  = langEN.GENDERS[requestedGender];
-		
-		this.attributes['repromptSpeech'] = langEN.REPROMPT;
+    'NameAnalysisIntent': function() {
+        this.emit('GetUserNameIntent');
+    },
+	'GetUserNameIntent': function() {
+        var requestedName   = alexaLib.validateAndSetSlot(this.event.request.intent.slots.Name);
+        var myName          = langEN.NAMES[requestedName];
+        
+        this.attributes['repromptSpeech'] = langEN.REPROMPT;
 
-		if (myName){
-			this.attributes['name'] = myName;
-		}else if(requestedName){
-			this.attributes['speechOutput'] = alexaLib.notFoundMessage(this.event.request.intent.slots.Name.name, requestedName);
-		}
-		else{
-			this.attributes['speechOutput'] = langEN.UNHANDLED;
-		}
+        if (myName){ //get user name
+            this.attributes['name'] = myName;
+        }else if(requestedName){ //if user provides a name that is not in my dictionary
+            this.attributes['speechOutput'] = alexaLib.notFoundMessage(this.event.request.intent.slots.Name.name, requestedName);
+        }else{
+            this.attributes['speechOutput'] = langEN.UNHANDLED;
+        }
 
-		if(this.attributes['continue']){
-			this.emit(':ask', this.attributes['name'] + ". " + this.attributes['repromptSpeech']);
-		}
-		else{
-			this.emit(':tell', this.attributes['speechOutput']);
-		}
-	},
+        this.attributes['speechOutput'] = "Hi, " + this.attributes['name'] + ". Whats your gender?";
+        this.emit(':ask', this.attributes['speechOutput'], 'GetUserGenderIntent');
+    },
+    'GetUserGenderIntent': function() {
+        var requestedGender  = alexaLib.validateAndSetSlot(this.event.request.intent.slots.Gender);
+        var myGender         = langEN.GENDERS[requestedGender];
+        var UserName         = this.attributes['name'];
+        
+        this.attributes['repromptSpeech'] = langEN.REPROMPT;
+
+        if(myGender){ //get user gender
+            this.emit(':ask', UserName);
+        }else if(requestedName){ //if user provides a gender that is not in my dictionary
+            this.attributes['speechOutput'] = alexaLib.notFoundMessage(this.event.request.intent.slots.Gender.gender, requestedGender);
+        }else{
+            this.attributes['speechOutput'] = langEN.UNHANDLED;
+        }
+    },
 	'Unhandled': function () {
         this.attributes['continue']         = true;
         this.attributes['speechOutput']     = langEN.UNHANDLED;
@@ -49,10 +60,7 @@ var handlers = {
         // Alexa, ask [my-skill-invocation-name] to (do something)...
         // If the user either does not reply to the welcome message or says something that is not
         // understood, they will be prompted again with this text.
-        this.attributes['continue']         = true;
-        this.attributes['speechOutput']     = langEN.WELCOME_MESSAGE;
-        this.attributes['repromptSpeech']   = langEN.WELCOME_REPROMPT;
-        this.emit(':ask', this.attributes['speechOutput'], this.attributes['repromptSpeech']);
+        this.emit(':ask', 'Welcome to Name Analysis. I can help you understand whether your first name is helping or hurting you… Please tell me your first name…');
     },
     'AMAZON.HelpIntent': function () {
         this.attributes['speechOutput'] = langEN.HELP_MESSAGE;
@@ -67,6 +75,12 @@ var handlers = {
     },
     'AMAZON.CancelIntent': function () {
         this.emit('SessionEndedRequest');
+    },
+    'AMAZON.YesIntent': function() {
+        this.emit('NameAnalysisIntent');
+    },
+    'AMAZON.NoIntent': function() {
+        this.emit(':tell', 'Thank you for trying Name Analysis. Remember your name can both help you and hurt you!');
     },
     'SessionEndedRequest':function () {
         this.emit(':tell', langEN.STOP_MESSAGE);
