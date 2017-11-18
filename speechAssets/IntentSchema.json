@@ -1,0 +1,44 @@
+{
+  "intents": [
+    {
+      "intent": "NameAnalysisIntent",
+      "slots": [
+        {
+          "name": "Name",
+          "type": "AMAZON.US_FIRST_NAME"
+        },
+        {
+          "name": "Gender",
+          "type": "LIST_OF_GENDERS"
+        }
+      ]
+    },
+    {
+      "intent": "GetUserNameIntent"
+    },
+    {
+      "intent": "GetUserGenderIntent"
+    },
+    {
+      "intent": "AMAZON.StartOverIntent"
+    },
+    {
+      "intent": "AMAZON.RepeatIntent"
+    },
+    {
+      "intent": "AMAZON.HelpIntent"
+    },
+    {
+      "intent": "AMAZON.YesIntent"
+    },
+    {
+      "intent": "AMAZON.NoIntent"
+    },
+    {
+      "intent": "AMAZON.StopIntent"
+    },
+    {
+      "intent": "AMAZON.CancelIntent"
+    }
+  ]
+}

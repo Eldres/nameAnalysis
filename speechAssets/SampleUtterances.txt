@@ -1,0 +1,5 @@
+NameAnalysisIntent what does {Name} mean
+NameAnalysisIntent whats the meaning of the name {Name}
+NameAnalysisIntent what is the meaning of {Name}
+NameAnalysisIntent what is the meaning of the name {Name}
+NameAnalysisIntent what does the name {Name} mean
