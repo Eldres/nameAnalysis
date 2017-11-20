@@ -55,7 +55,7 @@ var handlers = {
             this.attributes['speechOutput'] = langEN.UNHANDLED;
         }
 
-        this.emit(':ask', this.attributes['speechOutput'], this.attributes['repromptSpeech']);
+        this.emit(':ask', this.attributes['speechOutput'], this.attributes['repromptSpeech']); //no clue as to why there is a long pause between the speechOutput and the repromptSpeech
     },
 	'Unhandled': function () {
         this.attributes['continue']         = true;
@@ -80,7 +80,7 @@ var handlers = {
         this.emit(':ask', this.attributes['speechOutput'], this.attributes['repromptSpeech']);
     },
     'AMAZON.StartOverIntent': function () {
-        this.emit(LaunchRequest);
+        this.emit('LaunchRequest');
     },
     'AMAZON.StopIntent': function () {
         this.emit('SessionEndedRequest');
@@ -89,7 +89,7 @@ var handlers = {
         this.emit('SessionEndedRequest');
     },
     'AMAZON.YesIntent': function() {
-        this.emit(LaunchRequest);
+        this.emit('LaunchRequest');
     },
     'AMAZON.NoIntent': function() {
         this.emit(':tell', 'Thank you for trying Name Analysis. Remember your name can both help you and hurt you!');
