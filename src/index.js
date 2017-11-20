@@ -19,12 +19,14 @@ var handlers = {
         var requestedName     = alexaLib.validateAndSetSlot(this.event.request.intent.slots.Name);
         var thisName          = langEN.NAMES[requestedName];
         var thisNameDesc      = thisName.description;
+        var thisNameGender    = thisName.genderType;
         
         this.attributes['repromptSpeech'] = langEN.REPROMPT;
         
         if(thisName){ //checks to see if provided name exists in my dictionary of names
             this.attributes['name'] = requestedName; //store user input into session attribute, if given name is in dict
             this.attributes['description'] = thisNameDesc; //stores user input of requested names description into session attribute
+            this.attributes['gender'] = thisNameGender; //stores the gender type of the requested name into a session attribute
         }
         else if(requestedName){ //if user provides a name that is not in my dictionary
             this.attributes['speechOutput'] = alexaLib.notFoundMessage(this.event.request.intent.slots.Name.name, requestedName); //returns not found message if user provides name not listed in dict
@@ -37,19 +39,17 @@ var handlers = {
     },
     'GetUserGenderIntent': function() {
         var requestedGender  = alexaLib.validateAndSetSlot(this.event.request.intent.slots.Gender);
-        var myGender         = langEN.GENDERS[requestedGender];
+        var thisGender       = langEN.GENDERS[requestedGender];
         var myName           = this.attributes['name'];
+        var myGender         = this.attributes['gender'];
         var myNameDesc       = this.attributes['description'];
         
         this.attributes['repromptSpeech'] = langEN.REPROMPT;
 
-        if(myGender){ //checks to see if the provided gender exists in the dictionary
-            this.attributes['speechOutput'] = myNameDesc;
-            // if(myGender === "male"){
-            //     this.attributes['speechOutput'] = myNameDesc;
-            // }
+        if(thisGender == myGender){ //checks if requestedGender and genderType of name are the same
+            this.attributes['speechOutput'] = myNameDesc; //sets NameDesc to speechOutput
         }
-        else if(requestedName){ //if user provides a gender that is not in my dictionary
+        else if(requestedGender){ //if user provides a gender that is not in my dictionary
             this.attributes['speechOutput'] = alexaLib.notFoundMessage(this.event.request.intent.slots.Gender.gender, requestedGender);
         }else{
             this.attributes['speechOutput'] = langEN.UNHANDLED;
@@ -67,7 +67,6 @@ var handlers = {
         // Alexa, ask [my-skill-invocation-name] to (do something)...
         // If the user either does not reply to the welcome message or says something that is not
         // understood, they will be prompted again with this text.
-        this.attributes['continue']         = true;
         this.attributes['speechOutput']     = langEN.WELCOME_MESSAGE;
         this.attributes['repromptSpeech']   = langEN.WELCOME_REPROMPT;
         this.emit(':ask', this.attributes['speechOutput'], this.attributes['repromptSpeech']);
@@ -81,7 +80,7 @@ var handlers = {
         this.emit(':ask', this.attributes['speechOutput'], this.attributes['repromptSpeech']);
     },
     'AMAZON.StartOverIntent': function () {
-        this.emit('NameAnalysisIntent');
+        this.emit(NameAnalysisIntent);
     },
     'AMAZON.StopIntent': function () {
         this.emit('SessionEndedRequest');
@@ -90,7 +89,7 @@ var handlers = {
         this.emit('SessionEndedRequest');
     },
     'AMAZON.YesIntent': function() {
-        this.emit('NameAnalysisIntent');
+        this.emit(NameAnalysisIntent);
     },
     'AMAZON.NoIntent': function() {
         this.emit(':tell', 'Thank you for trying Name Analysis. Remember your name can both help you and hurt you!');
