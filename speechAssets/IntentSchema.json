@@ -1,39 +1,14 @@
 {
   "intents": [
     {
-<<<<<<< HEAD
-=======
       "intent": "NameAnalysisIntent",
->>>>>>> c4aadbfbb1c8fd7294c9bb5389245e44427f8fba
       "slots": [
         {
           "name": "Name",
           "type": "AMAZON.US_FIRST_NAME"
-<<<<<<< HEAD
         }
       ],
       "intent": "NameAnalysisIntent"
-    },
-    {
-      "slots": [
-=======
-        },
->>>>>>> c4aadbfbb1c8fd7294c9bb5389245e44427f8fba
-        {
-          "name": "Gender",
-          "type": "LIST_OF_GENDERS"
-        }
-<<<<<<< HEAD
-      ],
-=======
-      ]
-    },
-    {
-      "intent": "GetUserNameIntent"
-    },
-    {
->>>>>>> c4aadbfbb1c8fd7294c9bb5389245e44427f8fba
-      "intent": "GetUserGenderIntent"
     },
     {
       "intent": "AMAZON.StartOverIntent"

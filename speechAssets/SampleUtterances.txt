@@ -2,9 +2,5 @@ NameAnalysisIntent what does {Name} mean
 NameAnalysisIntent whats the meaning of the name {Name}
 NameAnalysisIntent what is the meaning of {Name}
 NameAnalysisIntent what is the meaning of the name {Name}
-<<<<<<< HEAD
 NameAnalysisIntent what does the name {Name} mean
 GetUserGenderIntent {Gender}
-=======
-NameAnalysisIntent what does the name {Name} mean
->>>>>>> c4aadbfbb1c8fd7294c9bb5389245e44427f8fba
