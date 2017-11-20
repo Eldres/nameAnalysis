@@ -7,8 +7,16 @@
           "name": "Name",
           "type": "AMAZON.US_FIRST_NAME"
         }
-      ],
-      "intent": "NameAnalysisIntent"
+      ]
+    },
+    {
+      "intent": "GetUserGenderIntent",
+      "slots":[
+        {
+          "name": "Gender",
+          "type": "LIST_OF_GENDERS"
+        }
+      ]
     },
     {
       "intent": "AMAZON.StartOverIntent"

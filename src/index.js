@@ -21,7 +21,7 @@ var handlers = {
         var thisNameDesc      = thisName.description;
         var thisNameGender    = thisName.genderType;
         
-        this.attributes['repromptSpeech'] = langEN.REPROMPT;
+        this.attributes['repromptSpeech'] = "Would you like to analyze a different name? Or you may stop by saying 'Stop'.";
         
         if(thisName){ //checks to see if provided name exists in my dictionary of names
             this.attributes['name'] = requestedName; //store user input into session attribute, if given name is in dict
@@ -44,10 +44,10 @@ var handlers = {
         var myGender         = this.attributes['gender'];
         var myNameDesc       = this.attributes['description'];
         
-        this.attributes['repromptSpeech'] = langEN.REPROMPT;
+        this.attributes['repromptSpeech'] = "Would you like to analyze a different name? Or you may stop by saying 'Stop'.";
 
         if(thisGender == myGender){ //checks if requestedGender and genderType of name are the same
-            this.attributes['speechOutput'] = myNameDesc; //sets NameDesc to speechOutput
+            this.attributes['speechOutput'] = myNameDesc; //sets NameDesc from session attribute to speechOutput
         }
         else if(requestedGender){ //if user provides a gender that is not in my dictionary
             this.attributes['speechOutput'] = alexaLib.notFoundMessage(this.event.request.intent.slots.Gender.gender, requestedGender);
@@ -80,7 +80,7 @@ var handlers = {
         this.emit(':ask', this.attributes['speechOutput'], this.attributes['repromptSpeech']);
     },
     'AMAZON.StartOverIntent': function () {
-        this.emit(NameAnalysisIntent);
+        this.emit(LaunchRequest);
     },
     'AMAZON.StopIntent': function () {
         this.emit('SessionEndedRequest');
@@ -89,7 +89,7 @@ var handlers = {
         this.emit('SessionEndedRequest');
     },
     'AMAZON.YesIntent': function() {
-        this.emit(NameAnalysisIntent);
+        this.emit(LaunchRequest);
     },
     'AMAZON.NoIntent': function() {
         this.emit(':tell', 'Thank you for trying Name Analysis. Remember your name can both help you and hurt you!');
