@@ -5,7 +5,6 @@ module.exports = {
 	"en": {
 		"translation": {
 			"NAMES" 			: names.NAMES,
-			"NAMES_ATTRIBUTES"  : names.NAMES_ATTRIBUTES,
 			"GENDERS" 			: genders.GENDERS,
 
 			"CONTINUE_PROMPT" 	: " Now, what was your question?",

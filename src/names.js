@@ -1,8 +1,4 @@
 module.exports = {
-	// "NAMES_ATTRIBUTES" : {
-	// 	"description"	  : "description",
-	// 	"gender type" 	  : "genderType"
-	// },
 	"NAMES" : {
 		"josh" : {
 			"description": "Your name of Josh creates a quick, clever mind capable of grasping and assimilating new ideas. You are rather studious, mentally challenging each new idea before accepting it. Because you learn so quickly you have little patience with those whose mental processes are somewhat slower, and you could become supercilious or somewhat 'know it all' in your attitude. This characteristic could make you rather unpopular with your associates.",
