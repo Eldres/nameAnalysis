@@ -1,0 +1,8 @@
+*.zip
+*.pyc
+*.png
+.idea/
+icons/
+node_modules/
+delzip.py
+/src/appId.js

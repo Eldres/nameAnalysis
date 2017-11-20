@@ -22,19 +22,9 @@ var handlers = {
         
         this.attributes['repromptSpeech'] = langEN.REPROMPT;
         
-        /* working code
-        if(thisName){
+        if(thisName){ //checks to see if provided name exists in my dictionary of names
             this.attributes['name'] = requestedName; //store user input into session attribute, if given name is in dict
-            thisName = this.attributes['name'];
-        }
-        this.attributes['speechOutput'] = "Hi, " + thisName + ". Whats your gender?";
-        this.emit(':ask', this.attributes['speechOutput']);
-        */
-
-        if(thisName){
-            this.attributes['name'] = requestedName; //store user input into session attribute, if given name is in dict
-            thisName = this.attributes['name'];
-            this.attributes['description'] = thisNameDesc;
+            this.attributes['description'] = thisNameDesc; //stores user input of requested names description into session attribute
         }
         else if(requestedName){ //if user provides a name that is not in my dictionary
             this.attributes['speechOutput'] = alexaLib.notFoundMessage(this.event.request.intent.slots.Name.name, requestedName); //returns not found message if user provides name not listed in dict
@@ -42,7 +32,7 @@ var handlers = {
             this.attributes['speechOutput'] = langEN.UNHANDLED;
         }
 
-        this.attributes['speechOutput'] = "Hi, " + thisName + ". Whats your gender?";
+        this.attributes['speechOutput'] = "Hi, " + this.attributes['name'] + ". Whats your gender?";
         this.emit(':ask', this.attributes['speechOutput']);
     },
     'GetUserGenderIntent': function() {
@@ -55,7 +45,7 @@ var handlers = {
 
         if(myGender){ //checks to see if the provided gender exists in the dictionary
             this.attributes['speechOutput'] = myNameDesc;
-            // if(myGender === "male"){ //this logic checks out -- if(myGender === "male"){
+            // if(myGender === "male"){
             //     this.attributes['speechOutput'] = myNameDesc;
             // }
         }
@@ -65,7 +55,7 @@ var handlers = {
             this.attributes['speechOutput'] = langEN.UNHANDLED;
         }
 
-        this.emit(':tell', this.attributes['speechOutput']);
+        this.emit(':ask', this.attributes['speechOutput'], this.attributes['repromptSpeech']);
     },
 	'Unhandled': function () {
         this.attributes['continue']         = true;
@@ -83,12 +73,15 @@ var handlers = {
         this.emit(':ask', this.attributes['speechOutput'], this.attributes['repromptSpeech']);
     },
     'AMAZON.HelpIntent': function () {
-        this.attributes['speechOutput'] = langEN.HELP_MESSAGE;
+        this.attributes['speechOutput']   = langEN.HELP_MESSAGE;
         this.attributes['repromptSpeech'] = langEN.HELP_REPROMPT;
         this.emit(':ask', this.attributes['speechOutput'], this.attributes['repromptSpeech']);
     },
     'AMAZON.RepeatIntent': function () {
         this.emit(':ask', this.attributes['speechOutput'], this.attributes['repromptSpeech']);
+    },
+    'AMAZON.StartOverIntent': function () {
+        this.emit('NameAnalysisIntent');
     },
     'AMAZON.StopIntent': function () {
         this.emit('SessionEndedRequest');
