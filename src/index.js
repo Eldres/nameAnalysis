@@ -23,13 +23,13 @@ var handlers = {
         
         this.attributes['repromptSpeech'] = "Would you like to analyze a different name? Or you may stop by saying 'Stop'.";
         
-        if(thisName){ //checks to see if provided name exists in my dictionary of names
+        if(thisName||requestedName){ //checks to see if provided name exists in my dictionary of names
             this.attributes['name'] = requestedName; //store user input into session attribute, if given name is in dict
             this.attributes['description'] = thisNameDesc; //stores user input of requested names description into session attribute
             this.attributes['gender'] = thisNameGender; //stores the gender type of the requested name into a session attribute
         }
-        else if(requestedName){ //if user provides a name that is not in my dictionary
-            this.attributes['speechOutput'] = alexaLib.notFoundMessage(this.event.request.intent.slots.Name.name, requestedName); //returns not found message if user provides name not listed in dict
+        else if(!requestedName){ //if user provides a name that is not in my dictionary
+            this.attributes['speechOutput'] = "I'm sorry I do not know the name analysis for "+requestedName+" , please try another name for analysis."; //returns not found message if user provides name not listed in dict
         }else{
             this.attributes['speechOutput'] = langEN.UNHANDLED;
         }
@@ -50,7 +50,7 @@ var handlers = {
             this.attributes['speechOutput'] = myNameDesc; //sets NameDesc from session attribute to speechOutput
         }
         else if(requestedGender){ //if user provides a gender that is not in my dictionary
-            this.attributes['speechOutput'] = alexaLib.notFoundMessage(this.event.request.intent.slots.Gender.gender, requestedGender);
+            this.attributes['speechOutput'] = "I'm sorry I only have information based on binary gender types. Please provide a gender type that is either male or female.";
         }else{
             this.attributes['speechOutput'] = langEN.UNHANDLED;
         }
@@ -58,7 +58,7 @@ var handlers = {
         this.emit(':ask', this.attributes['speechOutput'], this.attributes['repromptSpeech']); //no clue as to why there is a long pause between the speechOutput and the repromptSpeech
     },
 	'Unhandled': function () {
-        this.attributes['continue']         = true;
+        //this.attributes['continue']         = true;
         this.attributes['speechOutput']     = langEN.UNHANDLED;
         this.attributes['repromptSpeech']   = langEN.HELP_REPROMPT;
         this.emit(':ask', this.attributes['speechOutput'], this.attributes['repromptSpeech']);
