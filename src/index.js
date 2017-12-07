@@ -18,23 +18,23 @@ var handlers = {
 	'NameAnalysisIntent': function() {
         var requestedName     = alexaLib.validateAndSetSlot(this.event.request.intent.slots.Name);
         var thisName          = langEN.NAMES[requestedName];
-        var thisNameDesc      = thisName.description;
-        var thisNameGender    = thisName.genderType;
-        
+
         this.attributes['repromptSpeech'] = "Would you like to analyze a different name? Or you may stop by saying 'Stop'.";
-        
-        if(thisName||requestedName){ //checks to see if provided name exists in my dictionary of names
-            this.attributes['name'] = requestedName; //store user input into session attribute, if given name is in dict
+
+        if(thisName){ //checks to see if provided name exists in my dictionary of names
+	        var thisNameDesc      = thisName.description;
+	        var thisNameGender    = thisName.genderType;
+	        this.attributes['name'] = requestedName; //store user input into session attribute, if given name is in dict
             this.attributes['description'] = thisNameDesc; //stores user input of requested names description into session attribute
             this.attributes['gender'] = thisNameGender; //stores the gender type of the requested name into a session attribute
+	        this.attributes['speechOutput'] = "Hi, " + this.attributes['name'] + ". Whats your gender?";
         }
-        else if(!requestedName){ //if user provides a name that is not in my dictionary
+        else if(!thisName){ //if user provides a name that is not in my dictionary
             this.attributes['speechOutput'] = "I'm sorry I do not know the name analysis for "+requestedName+" , please try another name for analysis."; //returns not found message if user provides name not listed in dict
         }else{
             this.attributes['speechOutput'] = langEN.UNHANDLED;
         }
-
-        this.attributes['speechOutput'] = "Hi, " + this.attributes['name'] + ". Whats your gender?";
+        
         this.emit(':ask', this.attributes['speechOutput']);
     },
     'GetUserGenderIntent': function() {
@@ -43,19 +43,19 @@ var handlers = {
         var myName           = this.attributes['name'];
         var myGender         = this.attributes['gender'];
         var myNameDesc       = this.attributes['description'];
-        
+
         this.attributes['repromptSpeech'] = "Would you like to analyze a different name? Or you may stop by saying 'Stop'.";
 
         if(thisGender == myGender){ //checks if requestedGender and genderType of name are the same
             this.attributes['speechOutput'] = myNameDesc; //sets NameDesc from session attribute to speechOutput
         }
-        else if(requestedGender){ //if user provides a gender that is not in my dictionary
+        else if(!thisGender){ //if user provides a gender that is not in my dictionary
             this.attributes['speechOutput'] = "I'm sorry I only have information based on binary gender types. Please provide a gender type that is either male or female.";
         }else{
             this.attributes['speechOutput'] = langEN.UNHANDLED;
         }
-
-        this.emit(':ask', this.attributes['speechOutput'], this.attributes['repromptSpeech']); //no clue as to why there is a long pause between the speechOutput and the repromptSpeech
+	    //no clue as to why there is a long pause between the speechOutput and the repromptSpeech -- might be because it was using :ask and not :tell
+        this.emit(':tell', this.attributes['speechOutput'], this.attributes['repromptSpeech']);
     },
 	'Unhandled': function () {
         //this.attributes['continue']         = true;
@@ -89,7 +89,7 @@ var handlers = {
         this.emit('SessionEndedRequest');
     },
     'AMAZON.YesIntent': function() {
-        this.emit('LaunchRequest');
+        this.emit(':ask', 'Okay, what name would you like to check.');
     },
     'AMAZON.NoIntent': function() {
         this.emit(':tell', 'Thank you for trying Name Analysis. Remember your name can both help you and hurt you!');

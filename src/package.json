@@ -7,7 +7,15 @@
     "type": "git",
     "url": "https://github.com/Eldres/nameAnalysis.git"
   },
+  "devDependencies": {
+    "alexa-sdk": "^1.0.14",
+    "bespoken-tools": "^1.1.0",
+    "coveralls": "^3.0.0",
+    "istanbul": "^0.4.5",
+    "mocha": "^3.5.3",
+    "nyc": "^11.2.1"
+  },
   "dependencies": {
-    "alexa-sdk": "^1.0.20"
+    "alexa-sdk": "^1.0.8"
   }
 }
