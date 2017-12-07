@@ -1,5 +1,6 @@
 {
   "name": "skill-first-name-analysis",
+  "author": "Josh Nagel",
   "version": "1.0.0",
   "description": "Get information about your name",
   "main": "index.js",
