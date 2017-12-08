@@ -1,10 +1,12 @@
-var names	= require('./names');
-var genders	= require('./genders');
+var names	 = require('./names');
+var nameDesc = require('./nameDescription');
+var genders	 = require('./genders');
 
 module.exports = {
 	"en": {
 		"translation": {
 			"NAMES" 			: names.NAMES,
+			"DESCRIPTION"       : nameDesc.DESCRIPTION,
 			//"NAMES_ATTRIBUTES"	: names.NAMES_ATTRIBUTES,
 			"GENDERS" 			: genders.GENDERS,
 
